@@ -1,0 +1,16 @@
+intervention_id,intervention_name,keywords,description,cost_level,irc_reference
+1,Improved Road Signage,"sign,visibility,warning","Improve placement and clarity of road signs to warn drivers near schools and intersections.",Low,IRC 67
+2,Pedestrian Crossing Enhancement,"crosswalk,zebra,pedestrian crossing","Install zebra crossings and pedestrian signals to ensure pedestrian safety.",Medium,IRC 103
+3,Speed Calming Measures,"speed hump,speed breaker,overspeed","Install speed humps and rumble strips to reduce vehicle speed near schools and residential areas.",Low,IRC 99
+4,Street Lighting Upgrade,"lighting,visibility,night","Install high-intensity LED street lights to improve visibility during night time.",Medium,IRC 35
+5,Guard Rails Installation,"barrier,guardrail,curve","Install metal beam crash barriers on sharp curves and embankments.",High,IRC SP 84
+6,Road Markings Renewal,"marking,line faded,lanes","Repaint faded lane markings and pedestrian crossings for improved guidance.",Low,IRC 67
+7,Traffic Signal Synchronization,"signal,timing,traffic light","Optimize traffic signal timings to reduce red-light violations and congestion.",Medium,IRC 93
+8,Black Spot Improvement,"accident hotspot,blackspot,collision","Redesign road geometry and signage at accident-prone black spots.",High,IRC SP 87
+9,Shoulder Widening,"shoulder,narrow road,edge","Provide paved shoulders to allow safe vehicle recovery and avoid edge drop-offs.",High,IRC 73
+10,Speed Limit Enforcement,"camera,speed camera,violation","Install speed cameras and display warning signs for strict enforcement.",High,IRC 99
+11,Drainage Maintenance,"waterlogging,drain,flood","Ensure proper drainage systems to prevent skidding and surface damage.",Medium,IRC 35
+12,Road Surface Maintenance,"pothole,uneven surface,damaged road","Repair potholes and resurface damaged sections for smoother movement.",Medium,IRC 81
+13,Bus Bay Construction,"bus stop,congestion,public transport","Construct bus bays to prevent lane blockage by stationary buses.",Medium,IRC 70
+14,Pedestrian Guardrails,"footpath,fence,pedestrian safety","Install guardrails to separate pedestrian movement from vehicles.",Low,IRC 103
+15,Crash Barrier at Bridges,"bridge,river,drop","Install crash barriers on bridges and culverts to prevent vehicle fall accidents.",High,IRC SP 84

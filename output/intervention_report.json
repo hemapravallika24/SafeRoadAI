@@ -1,0 +1,182 @@
+[
+    {
+        "issue": "Road Safety Audit – Section NH45 (Near Green Valley School)",
+        "recommendations": [
+            {
+                "intervention": "School Zone Warning Sign",
+                "irc_code": "IRC 67",
+                "clause": 8.2,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            }
+        ],
+        "total_cost": 10000
+    },
+    {
+        "issue": "- Vehicles observed overspeeding near the school entrance.",
+        "recommendations": [
+            {
+                "intervention": "Speed Hump",
+                "irc_code": "IRC 99",
+                "clause": 6.3,
+                "cost_level": "Medium",
+                "estimated_cost": 50000
+            },
+            {
+                "intervention": "School Zone Warning Sign",
+                "irc_code": "IRC 67",
+                "clause": 8.2,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            }
+        ],
+        "total_cost": 60000
+    },
+    {
+        "issue": "- Poor street lighting during night hours reduces visibility.",
+        "recommendations": [
+            {
+                "intervention": "Reflective Studs",
+                "irc_code": "IRC 99",
+                "clause": 7.4,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            },
+            {
+                "intervention": "Street Lighting",
+                "irc_code": "IRC SP:84",
+                "clause": 7.1,
+                "cost_level": "High",
+                "estimated_cost": 200000
+            }
+        ],
+        "total_cost": 210000
+    },
+    {
+        "issue": "- Absence of warning signs and reflective road studs at sharp curves.",
+        "recommendations": [
+            {
+                "intervention": "Reflective Studs",
+                "irc_code": "IRC 99",
+                "clause": 7.4,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            },
+            {
+                "intervention": "Chevron Sign",
+                "irc_code": "IRC 67",
+                "clause": 9.5,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            },
+            {
+                "intervention": "Warning Signage",
+                "irc_code": "IRC 67",
+                "clause": 9.2,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            }
+        ],
+        "total_cost": 30000
+    },
+    {
+        "issue": "- The pedestrian crossing is faded and lacks proper markings.",
+        "recommendations": [
+            {
+                "intervention": "Pedestrian Crossing Markings",
+                "irc_code": "IRC 35",
+                "clause": 4.1,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            }
+        ],
+        "total_cost": 10000
+    },
+    {
+        "issue": "- Drainage near the shoulder area is damaged, leading to waterlogging during rain.",
+        "recommendations": [
+            {
+                "intervention": "Anti-Skid Treatment",
+                "irc_code": "IRC SP:87",
+                "clause": 5.4,
+                "cost_level": "Medium",
+                "estimated_cost": 50000
+            },
+            {
+                "intervention": "Drainage Improvement",
+                "irc_code": "IRC SP:84",
+                "clause": 5.2,
+                "cost_level": "Medium",
+                "estimated_cost": 50000
+            }
+        ],
+        "total_cost": 100000
+    },
+    {
+        "issue": "- Install speed humps and school zone signage.",
+        "recommendations": [
+            {
+                "intervention": "School Zone Warning Sign",
+                "irc_code": "IRC 67",
+                "clause": 8.2,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            },
+            {
+                "intervention": "Warning Signage",
+                "irc_code": "IRC 67",
+                "clause": 9.2,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            }
+        ],
+        "total_cost": 20000
+    },
+    {
+        "issue": "- Improve street lighting and reflective road markings.",
+        "recommendations": [
+            {
+                "intervention": "Reflective Studs",
+                "irc_code": "IRC 99",
+                "clause": 7.4,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            },
+            {
+                "intervention": "Street Lighting",
+                "irc_code": "IRC SP:84",
+                "clause": 7.1,
+                "cost_level": "High",
+                "estimated_cost": 200000
+            }
+        ],
+        "total_cost": 210000
+    },
+    {
+        "issue": "- Repaint crosswalks and ensure adequate drainage.",
+        "recommendations": [
+            {
+                "intervention": "Anti-Skid Treatment",
+                "irc_code": "IRC SP:87",
+                "clause": 5.4,
+                "cost_level": "Medium",
+                "estimated_cost": 50000
+            },
+            {
+                "intervention": "Pedestrian Crossing Markings",
+                "irc_code": "IRC 35",
+                "clause": 4.1,
+                "cost_level": "Low",
+                "estimated_cost": 10000
+            },
+            {
+                "intervention": "Drainage Improvement",
+                "irc_code": "IRC SP:84",
+                "clause": 5.2,
+                "cost_level": "Medium",
+                "estimated_cost": 50000
+            }
+        ],
+        "total_cost": 110000
+    }
+]
