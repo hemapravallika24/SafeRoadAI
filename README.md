@@ -90,8 +90,9 @@ streamlit run app.py
 
 ## 👩‍💻 Team Members
 
-* **S. Md. Suraim**
 * **Hema Pravallika**
+* **Chakravaram Hema**
+* **Saba Anjum G**
 
 ---
 

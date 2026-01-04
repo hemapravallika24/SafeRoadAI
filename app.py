@@ -322,6 +322,17 @@ def render_interventions(df):
         """
         st.markdown(html, unsafe_allow_html=True)
 
+def scroll_to_results():
+    st.markdown("""
+    <script>
+        const el = document.getElementById("ai-results");
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+        }
+    </script>
+    """, unsafe_allow_html=True)
+
+
 # --- MANUAL MODE ---
 if mode == "📝 Describe Manually" and user_input and analyze_manual:
     with st.spinner("Analyzing issue..."):
@@ -329,6 +340,9 @@ if mode == "📝 Describe Manually" and user_input and analyze_manual:
         matches = find_matching_interventions(issues, interventions_df)
 
     # Results
+    st.markdown("<div id='ai-results'></div>", unsafe_allow_html=True)
+
+# Results
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("<h3>Analysis Results</h3>", unsafe_allow_html=True)
     st.markdown(f"<div class='muted'>Detected issues: {', '.join(issues)}</div>", unsafe_allow_html=True)
@@ -369,8 +383,11 @@ elif mode == "📄 Upload PDF Report" and uploaded_pdf:
 
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("<h3>AI Summary</h3>", unsafe_allow_html=True)
-    st.write(generate_ai_summary(pdf_text[:2000], matches))
+    st.write(generate_ai_summary(user_input, matches))
     st.markdown("</div>", unsafe_allow_html=True)
+
+    scroll_to_results()
+
 
 # ---- DEFAULT OVERVIEW ----
 else:
