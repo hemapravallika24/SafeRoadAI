@@ -151,9 +151,19 @@ html, body, [class*="css"] {
 st.markdown(lovable_style, unsafe_allow_html=True)
 
 # ----- Load Interventions CSV -----
-INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
-genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
-MODEL_NAME = "models/gemini-2.5-flash"
+# ----- GOOGLE GEMINI CONFIG (CLOUD SAFE) -----
+INTERVENTIONS_CSV = "data/irc_interventions.csv"
+
+API_KEY = st.secrets.get("GOOGLE_API_KEY")
+
+if not API_KEY:
+    st.error("❌ Google API key not configured. Please contact the developer.")
+    st.stop()
+
+genai.configure(api_key=API_KEY)
+
+MODEL_NAME = "models/gemini-1.5-flash"
+
 
 
 def load_interventions(csv_path):
