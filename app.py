@@ -153,7 +153,7 @@ st.markdown(lovable_style, unsafe_allow_html=True)
 # ----- Load Interventions CSV -----
 INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
 genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
-MODEL_NAME = "models/gemini-2.5-flash"
+MODEL_NAME = "models/gemini-1.5-flash"
 
 
 def load_interventions(csv_path):
@@ -233,6 +233,9 @@ Interventions: {df_small.to_string(index=False)}
     except:
         return "AI Summary unavailable."
 
+INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
+genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
+MODEL_NAME = "models/gemini-1.5-flash"
 
 interventions_df = load_interventions(INTERVENTIONS_CSV)
 
