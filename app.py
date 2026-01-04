@@ -136,6 +136,12 @@ if mode == "📝 Manual Description":
         height=160
     )
     analyze_clicked = st.button("Analyze Issue")
+    if st.button("Analyze Issue"):
+        st.info("🔽 Scroll down to view the AI Summary and recommended interventions")
+
+    # --- existing AI logic below ---
+    # gemini / analysis code
+
 
 else:
     uploaded_pdf = st.file_uploader("Upload road audit PDF", type=["pdf"])
