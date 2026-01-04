@@ -283,7 +283,7 @@ else:
 
 # Tips Card
 st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<h5>🔽 Scroll down to view the AI Summary</h5>",unsafe_allow_html=True)
+st.markdown("<h5>🔽 Scroll down to view the AI Summary after clicking on Analyze Issue</h5>",unsafe_allow_html=True)
 st.markdown("<h3>Tips for best results</h3>", unsafe_allow_html=True)
 st.markdown("""
 <ul class='sr-list'>
