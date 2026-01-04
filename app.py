@@ -272,6 +272,7 @@ if mode == "📝 Describe Manually":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("<h3>Describe the road issue</h3>", unsafe_allow_html=True)
     user_input = st.text_area("", placeholder="Example: High-speed curve with insufficient signage", height=180)
+    st.markdown("<h4>🔽 Scroll down to view the AI Summary",unsafe_allow_html=True)
     analyze_manual = st.button("Analyze Issue")
     st.markdown("</div>", unsafe_allow_html=True)
 
