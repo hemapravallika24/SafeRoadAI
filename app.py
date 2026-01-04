@@ -18,6 +18,8 @@ st.set_page_config(
     page_icon="🚦",
     layout="wide"
 )
+if "show_scroll_msg" not in st.session_state:
+    st.session_state.show_scroll_msg = False
 
 result_container = st.container()
 
@@ -136,6 +138,9 @@ if mode == "📝 Manual Description":
         height=160
     )
     analyze_clicked = st.button("Analyze Issue")
+if analyze_clicked:
+    st.session_state.show_scroll_msg = True
+
     if analyze_clicked:
         st.info("🔽 Scroll down to view the AI Summary and recommended interventions")
 
@@ -146,6 +151,21 @@ if mode == "📝 Manual Description":
 else:
     uploaded_pdf = st.file_uploader("Upload road audit PDF", type=["pdf"])
     analyze_clicked = uploaded_pdf is not None
+
+    if st.session_state.show_scroll_msg:
+       st.markdown("""
+    <div style="
+        background:#eef6ff;
+        padding:12px;
+        border-radius:10px;
+        font-weight:600;
+        color:#0b3b61;
+        margin-top:10px;
+    ">
+    ⬇️ Scroll down to view the AI Summary and recommended interventions
+    </div>
+    """, unsafe_allow_html=True)
+
 
 # ----- RESULTS -----
 if analyze_clicked:
