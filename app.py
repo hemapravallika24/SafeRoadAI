@@ -19,6 +19,9 @@ st.set_page_config(
     layout="wide"
 )
 
+result_container = st.container()
+
+
 # ----- PREMIUM CSS -----
 st.markdown("""
 <style>
@@ -140,40 +143,29 @@ else:
 
 # ----- RESULTS -----
 if analyze_clicked:
+    with result_container:
+        st.markdown("## 🧠 AI Analysis Results")
 
-    st.markdown("<div id='ai-results'></div>", unsafe_allow_html=True)
+        st.success("✅ Analysis completed")
 
-    with st.spinner("🔍 Analyzing road safety issue using AI…"):
-        if mode == "📝 Manual Description":
-            issues = extract_road_issues(user_input)
-            matches = find_matching_interventions(issues, interventions_df)
-            summary = generate_ai_summary(user_input, matches)
+        st.markdown("### Detected Issues")
+        st.write(", ".join(issues) if issues else "None detected")
+
+        st.markdown("### Recommended Interventions")
+        if not matches.empty:
+            for _, row in matches.iterrows():
+                st.markdown(f"""
+                <div class="interv">
+                    <b>{row['title']}</b><br>
+                    {row['description']}
+                </div>
+                """, unsafe_allow_html=True)
         else:
-            pdf_text = extract_text_from_pdf(uploaded_pdf)
-            issues = extract_road_issues(pdf_text)
-            matches = find_matching_interventions(issues, interventions_df)
-            summary = generate_ai_summary(pdf_text, matches)
+            st.warning("No matching interventions found")
 
-    st.success("✅ Analysis complete! Scroll down to view results")
+        st.markdown("### AI Summary")
+        st.write(summary)
 
-    st.markdown("<div class='card'><h3>Detected Issues</h3>" +
-                ", ".join(issues) + "</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='card'><h3>Recommended Interventions</h3>", unsafe_allow_html=True)
-    if not matches.empty:
-        for _, row in matches.iterrows():
-            st.markdown(f"""
-            <div class="interv">
-                <b>{row['title']}</b><br>
-                {row['description']}
-            </div>
-            """, unsafe_allow_html=True)
-    else:
-        st.warning("No matching interventions found.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='card'><h3>🧠 AI Summary</h3></div>", unsafe_allow_html=True)
-    st.write(summary)
 
     # ✅ REAL AUTO-SCROLL (WORKS ON STREAMLIT CLOUD)
     components.html("""
