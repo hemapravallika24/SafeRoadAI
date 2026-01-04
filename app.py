@@ -151,21 +151,9 @@ html, body, [class*="css"] {
 st.markdown(lovable_style, unsafe_allow_html=True)
 
 # ----- Load Interventions CSV -----
-# ----- GOOGLE GEMINI CONFIG (CLOUD SAFE) -----
-INTERVENTIONS_CSV = "data/irc_interventions.csv"
-interventions_df = load_interventions(INTERVENTIONS_CSV)
-
-
-API_KEY = st.secrets.get("GOOGLE_API_KEY")
-
-if not API_KEY:
-    st.error("❌ Google API key not configured. Please contact the developer.")
-    st.stop()
-
-genai.configure(api_key=API_KEY)
-
-MODEL_NAME = "models/gemini-1.5-flash"
-
+INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
+genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
+MODEL_NAME = "models/gemini-2.5-flash"
 
 
 def load_interventions(csv_path):
@@ -197,6 +185,37 @@ def extract_text_from_pdf(pdf_path):
         return text.strip()
     except:
         return ""
+
+
+def extract_road_issues(text):
+    if not text:
+        return []
+    pattern = r"(?i)\b(pothole|crack|sign|lighting|barrier|shoulder|accident|drain|flood|curve|school|intersection)\b"
+    found = re.findall(pattern, text)
+    return list({x.lower() for x in found})
+
+
+def normalize_keywords(k):
+    if isinstance(k, str):
+        return [x.strip().lower() for x in k.split(",") if x.strip()]
+    return []
+
+
+def find_matching_interventions(issues, df):
+    matches = []
+    for _, row in df.iterrows():
+        kws = normalize_keywords(row.get("keywords", ""))
+        desc = row.get("description", "").lower()
+        title = row.get("title", "").lower()
+
+        for iss in issues:
+            if iss in kws or iss in desc or iss in title:
+                matches.append(row)
+                break
+
+    if matches:
+        return pd.DataFrame(matches)
+    return pd.DataFrame()
 
 
 def generate_ai_summary(issue_text, result_df):
@@ -242,87 +261,12 @@ st.markdown("<div class='left'>", unsafe_allow_html=True)
 # Input Mode
 st.markdown("<div class='card'>", unsafe_allow_html=True)
 st.markdown("<h3>Get started</h3>", unsafe_allow_html=True)
-mode = st.radio(
-    "Choose input method",
-    ["📝 Describe Manually", "📄 Upload PDF Report"]
-)
-
+mode = st.radio("", ("📝 Describe Manually", "📄 Upload PDF Report"))
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Manual
 user_input = None
-uploaded_p
-def extract_road_issues(text):
-    if not text:
-        return []
-    pattern = r"(?i)\b(pothole|crack|sign|lighting|barrier|shoulder|accident|drain|flood|curve|school|intersection)\b"
-    found = re.findall(pattern, text)
-    return list({x.lower() for x in found})
-
-
-def normalize_keywords(k):
-    if isinstance(k, str):
-        return [x.strip().lower() for x in k.split(",") if x.strip()]
-    return []
-
-
-def find_matching_interventions(issues, df):
-    matches = []
-    for _, row in df.iterrows():
-        kws = normalize_keywords(row.get("keywords", ""))
-        desc = row.get("description", "").lower()
-        title = row.get("title", "").lower()
-
-        for iss in issues:
-            if iss in kws or iss in desc or iss in title:
-                matches.append(row)
-                break
-
-    if matches:
-        return pd.DataFrame(matches)
-    return pd.DataFrame()
-def generate_ai_summary(text, matches_df):
-    if not text:
-        return "No input provided for AI analysis."
-
-    try:
-        model = genai.GenerativeModel(MODEL_NAME)
-
-        interventions = ""
-        if matches_df is not None and not matches_df.empty:
-            interventions = "\n".join(
-                f"- {row['title']}: {row['description']}"
-                for _, row in matches_df.iterrows()
-            )
-
-        prompt = f"""
-You are a road safety expert.
-
-Road issue description:
-{text}
-
-Recommended interventions:
-{interventions}
-
-Provide a clear, short AI summary explaining:
-1. The main safety risks
-2. Why these interventions are suitable
-3. Expected impact
-"""
-
-        response = model.generate_content(prompt)
-        return response.text
-
-    except Exception as e:
-        return "⚠️ AI summary unavailable. Please try again later."
-
-
-df = None
-mode = st.radio(
-    "Choose input method",
-    ["📝 Describe Manually", "📄 Upload PDF Report"]
-)
-
+uploaded_pdf = None
 
 if mode == "📝 Describe Manually":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
@@ -339,7 +283,7 @@ else:
 
 # Tips Card
 st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<h5>🔽 Scroll down to view the AI Summary after clicking on Analyze Issue</h5>",unsafe_allow_html=True)
+st.markdown("<h5>🔽 Scroll down to view the AI Summary</h5>",unsafe_allow_html=True)
 st.markdown("<h3>Tips for best results</h3>", unsafe_allow_html=True)
 st.markdown("""
 <ul class='sr-list'>
@@ -355,13 +299,31 @@ st.markdown("</div>", unsafe_allow_html=True)  # close left
 # ----- RIGHT (RESULTS) -----
 st.markdown("<div class='right'>", unsafe_allow_html=True)
 
+def render_interventions(df):
+    for _, row in df.iterrows():
+        title = row["title"]
+        desc = row["description"]
+        priority = row.get("priority", "Medium")
+        eff = row.get("effectiveness", "Medium")
+        comp = row.get("complexity", "Moderate")
+
+        html = f"""
+        <div class='interv'>
+            <div class='accent'></div>
+            <div class='body'>
+                <div style="font-weight:700; font-size:18px; color:#08375f;">{title}</div>
+                <div style="margin-top:8px; color:#334155;">{desc}</div>
+                <div style="margin-top:10px;">
+                    <span class="pill">Priority: {priority}</span>
+                    <span class="pill">Effectiveness: {eff}</span>
+                    <span class="pill">Complexity: {comp}</span>
+                </div>
+            </div>
+        </div>
+        """
+        st.markdown(html, unsafe_allow_html=True)
 
 # --- MANUAL MODE ---
-mode = st.radio(
-    "Choose input method",
-    ["📝 Describe Manually", "📄 Upload PDF Report"]
-)
-
 if mode == "📝 Describe Manually" and user_input and analyze_manual:
     with st.spinner("Analyzing issue..."):
         issues = extract_road_issues(user_input)
@@ -432,26 +394,3 @@ st.markdown("</div>", unsafe_allow_html=True)  # close wrap
 # ----- FOOTER -----
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("<div class='sr-footer'>🚦 <b>SafeRoad AI © 2025 | Team Ignite</b> • Built with ❤ using Streamlit</div>", unsafe_allow_html=True)
-def render_interventions(df):
-    for _, row in df.iterrows():
-        title = row["title"]
-        desc = row["description"]
-        priority = row.get("priority", "Medium")
-        eff = row.get("effectiveness", "Medium")
-        comp = row.get("complexity", "Moderate")
-
-        html = f"""
-        <div class='interv'>
-            <div class='accent'></div>
-            <div class='body'>
-                <div style="font-weight:700; font-size:18px; color:#08375f;">{title}</div>
-                <div style="margin-top:8px; color:#334155;">{desc}</div>
-                <div style="margin-top:10px;">
-                    <span class="pill">Priority: {priority}</span>
-                    <span class="pill">Effectiveness: {eff}</span>
-                    <span class="pill">Complexity: {comp}</span>
-                </div>
-            </div>
-        </div>
-        """
-        st.markdown(html, unsafe_allow_html=True)
