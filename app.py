@@ -1,4 +1,4 @@
-# SafeRoad AI 
+# app_local.py — SafeRoad AI (Lovable + Premium UI)
 # Fully cleaned, no example buttons, no session_state errors.
 
 import os
@@ -9,6 +9,15 @@ import pandas as pd
 import streamlit as st
 from PyPDF2 import PdfReader
 import google.generativeai as genai
+
+API_KEY = st.secrets.get("GOOGLE_API_KEY")
+
+if not API_KEY:
+    st.error("Google API key missing in Streamlit Secrets.")
+    st.stop()
+
+genai.configure(api_key=API_KEY)
+
 
 # ----- PAGE CONFIG -----
 st.set_page_config(
@@ -153,7 +162,8 @@ st.markdown(lovable_style, unsafe_allow_html=True)
 # ----- Load Interventions CSV -----
 INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
 genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
-MODEL_NAME = "models/gemini-2.5-flash"
+MODEL_NAME = "gemini-1.5-flash"
+
 
 
 def load_interventions(csv_path):
@@ -218,20 +228,38 @@ def find_matching_interventions(issues, df):
     return pd.DataFrame()
 
 
-def generate_ai_summary(issue_text, result_df):
-    short = issue_text[:600]
-    df_small = result_df.head(5)
+def generate_ai_summary(issue_text, matches):
+    if not issue_text.strip():
+        return "⚠️ No input provided for analysis."
+
     prompt = f"""
-Summarize the road safety issue and suggest top interventions.
-Issue: {short}
-Interventions: {df_small.to_string(index=False)}
+You are a road safety expert.
+
+Summarize the issue clearly and suggest 3–5 actionable interventions.
+
+ISSUE:
+{issue_text[:600]}
+
+INTERVENTIONS DATA:
+{matches.head(5).to_string(index=False) if not matches.empty else "No predefined interventions found."}
 """
+
     try:
-        model = genai.GenerativeModel(MODEL_NAME)
-        res = model.generate_content(prompt)
-        return res.text or "No summary generated."
-    except:
-        return "AI Summary unavailable."
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(prompt)
+
+        if not response or not hasattr(response, "text"):
+            return "⚠️ AI responded with no content."
+
+        return response.text.strip()
+
+    except Exception as e:
+        return f"❌ AI Summary unavailable.\n\nReason: {str(e)}"
+
+
+INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
+genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
+MODEL_NAME = "gemini-1.5-flash"
 
 
 interventions_df = load_interventions(INTERVENTIONS_CSV)
@@ -272,9 +300,9 @@ if mode == "📝 Describe Manually":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("<h3>Describe the road issue</h3>", unsafe_allow_html=True)
     user_input = st.text_area("", placeholder="Example: High-speed curve with insufficient signage", height=180)
-    st.markdown("<h5>🔽 Scroll down to view the AI Summary after clicking on Analyze Issue</h5>",unsafe_allow_html=True)
     analyze_manual = st.button("Analyze Issue")
     st.markdown("</div>", unsafe_allow_html=True)
+
 else:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("<h3>Upload Road Report (PDF)</h3>", unsafe_allow_html=True)
@@ -283,6 +311,7 @@ else:
 
 # Tips Card
 st.markdown("<div class='card'>", unsafe_allow_html=True)
+st.markdown("<h5>🔽 Scroll down to view the AI Summary</h5>",unsafe_allow_html=True)
 st.markdown("<h3>Tips for best results</h3>", unsafe_allow_html=True)
 st.markdown("""
 <ul class='sr-list'>
