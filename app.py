@@ -136,7 +136,7 @@ if mode == "📝 Manual Description":
         height=160
     )
     analyze_clicked = st.button("Analyze Issue")
-    if st.button("Analyze Issue"):
+    if analyze_clicked:
         st.info("🔽 Scroll down to view the AI Summary and recommended interventions")
 
     # --- existing AI logic below ---
