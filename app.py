@@ -229,7 +229,7 @@ Interventions:
 {matches.head(5).to_string(index=False)}
 """
     try:
-        model = genai.GenerativeModel(MODEL_NAME)
+        model = genai.GenerativeModel("models/gemini-1.5-flash")
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
