@@ -10,6 +10,8 @@ import streamlit as st
 from PyPDF2 import PdfReader
 import google.generativeai as genai
 
+
+
 # ----- PAGE CONFIG -----
 st.set_page_config(
     page_title="Road Safety Intervention — SafeRoad AI",
@@ -152,8 +154,9 @@ st.markdown(lovable_style, unsafe_allow_html=True)
 
 # ----- Load Interventions CSV -----
 INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
-genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
-MODEL_NAME = "models/gemini-1.5-flash"
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel(MODEL_NAME)
+
 
 
 def load_interventions(csv_path):
@@ -229,7 +232,7 @@ Interventions:
 {matches.head(5).to_string(index=False)}
 """
     try:
-        model = genai.GenerativeModel("models/gemini-1.5-flash")
+        model = genai.GenerativeModel("models/gemini-1.5-flash-001")
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
@@ -237,8 +240,8 @@ Interventions:
 
 
 INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
-genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
-MODEL_NAME = "models/gemini-1.5-flash"
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel(MODEL_NAME)
 
 interventions_df = load_interventions(INTERVENTIONS_CSV)
 
