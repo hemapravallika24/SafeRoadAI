@@ -10,6 +10,14 @@ import streamlit as st
 from PyPDF2 import PdfReader
 import google.generativeai as genai
 
+# ----- GOOGLE GEMINI CONFIG -----
+API_KEY = st.secrets.get("GOOGLE_API_KEY")
+
+if not API_KEY:
+    st.error("❌ Google API key not configured.")
+    st.stop()
+
+genai.configure(api_key=API_KEY)
 
 
 # ----- PAGE CONFIG -----
