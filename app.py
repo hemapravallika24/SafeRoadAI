@@ -218,20 +218,23 @@ def find_matching_interventions(issues, df):
     return pd.DataFrame()
 
 
-def generate_ai_summary(issue_text, result_df):
-    short = issue_text[:600]
-    df_small = result_df.head(5)
+def generate_ai_summary(issue_text, matches):
     prompt = f"""
-Summarize the road safety issue and suggest top interventions.
-Issue: {short}
-Interventions: {df_small.to_string(index=False)}
+Summarize the road safety issue and suggest key interventions.
+
+Issue:
+{issue_text[:800]}
+
+Interventions:
+{matches.head(5).to_string(index=False)}
 """
     try:
         model = genai.GenerativeModel(MODEL_NAME)
-        res = model.generate_content(prompt)
-        return res.text or "No summary generated."
-    except:
-        return "AI Summary unavailable."
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        return f"❌ AI Summary unavailable.\nReason: {str(e)}"
+
 
 INTERVENTIONS_CSV = os.environ.get("INTERVENTIONS_CSV", "data/irc_interventions.csv")
 genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
